@@ -2,14 +2,32 @@
 const navBtns = document.querySelectorAll('.nav-btn');
 const tabs = document.querySelectorAll('.tab');
 
+function switchTab(tabName) {
+  navBtns.forEach(b => b.classList.remove('active'));
+  tabs.forEach(t => t.classList.remove('active'));
+  const btn = document.querySelector(`.nav-btn[data-tab="${tabName}"]`);
+  const tab = document.getElementById(tabName);
+  if (btn && tab) {
+    btn.classList.add('active');
+    tab.classList.add('active');
+  } else {
+    // fallback to featured
+    document.querySelector('.nav-btn[data-tab="featured"]').classList.add('active');
+    document.getElementById('featured').classList.add('active');
+  }
+}
+
 navBtns.forEach(btn => {
   btn.addEventListener('click', () => {
-    navBtns.forEach(b => b.classList.remove('active'));
-    tabs.forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(btn.dataset.tab).classList.add('active');
+    const tabName = btn.dataset.tab;
+    switchTab(tabName);
+    location.hash = tabName;
   });
 });
+
+// Load correct tab on page load from hash
+const initialTab = location.hash.replace('#', '') || 'featured';
+switchTab(initialTab);
 
 // ── Carousels ──
 function initCarousel(el) {
