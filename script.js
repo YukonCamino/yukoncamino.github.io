@@ -104,14 +104,8 @@ document.addEventListener('keydown', e => {
 const loadMoreBtn = document.getElementById('load-more-commercials');
 if (loadMoreBtn) {
   loadMoreBtn.addEventListener('click', function () {
-    document.querySelectorAll('#commercials .more-videos').forEach(el => {
-      el.classList.remove('hidden');
-      const iframe = el.querySelector('iframe');
-      if (iframe && iframe.dataset.src) {
-        iframe.src = iframe.dataset.src;
-        delete iframe.dataset.src;
-      }
-    });
+    const grid = document.getElementById('commercials-more');
+    if (grid) grid.classList.remove('hidden');
     this.parentElement.remove();
   });
 }

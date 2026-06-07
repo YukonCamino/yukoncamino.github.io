@@ -267,6 +267,18 @@ nav {
 .lb-prev  { left: 16px; font-size: 56px; }
 .lb-next  { right: 16px; font-size: 56px; }
 
+/* ── Load More grid ── */
+.video-grid-more {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  padding: 0 48px 48px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.video-grid-item { width: 100%; }
+
 /* ── Load More ── */
 .hidden { display: none; }
 
