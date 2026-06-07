@@ -11,7 +11,7 @@ header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 36px 48px 28px;
 }
@@ -69,7 +69,7 @@ nav {
   gap: 32px;
   padding: 32px 48px 48px;
   align-items: center;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -189,7 +189,7 @@ nav {
 .poster-grid,
 .contact-wrap,
 .load-more-wrap {
-  max-width: 900px;
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -262,7 +262,7 @@ nav {
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
   padding: 8px 48px 48px;
-  max-width: 900px;
+  max-width: 1200px;
 }
 
 .poster-card img {
@@ -307,7 +307,7 @@ nav {
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
   padding: 0 48px 48px;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -340,7 +340,7 @@ nav {
 /* ── Contact ── */
 .contact-wrap {
   padding: 60px 48px;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   align-items: center;
