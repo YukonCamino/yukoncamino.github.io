@@ -100,6 +100,19 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight')  shiftLightbox(1);
 });
 
+// ── GIF thumbnails → Vimeo on click ──
+document.querySelectorAll('.gif-thumb').forEach(thumb => {
+  thumb.addEventListener('click', () => {
+    const id = thumb.dataset.vimeo;
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://player.vimeo.com/video/${id}?autoplay=1`;
+    iframe.allowFullscreen = true;
+    iframe.allow = 'autoplay';
+    iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:none;';
+    thumb.replaceWith(iframe);
+  });
+});
+
 // ── Load more (Commercials) ──
 const loadMoreBtn = document.getElementById('load-more-commercials');
 if (loadMoreBtn) {

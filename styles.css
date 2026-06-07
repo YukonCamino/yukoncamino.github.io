@@ -89,6 +89,40 @@ nav {
   border: none;
 }
 
+/* ── GIF thumbnail (click to load video) ── */
+.gif-thumb {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+}
+
+.gif-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gif-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 64px;
+  height: 64px;
+  background: rgba(0,0,0,0.55);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, opacity 0.2s;
+  opacity: 0;
+}
+
+.gif-thumb:hover .gif-play { opacity: 1; }
+
+.gif-play svg { width: 28px; height: 28px; fill: #fff; margin-left: 4px; }
+
 /* YouTube thumbnail fallback (for videos with embedding disabled) */
 .yt-thumb {
   position: absolute;
