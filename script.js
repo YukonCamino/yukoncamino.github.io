@@ -133,6 +133,22 @@ document.querySelectorAll('.gif-thumb').forEach(thumb => {
   });
 });
 
+// ── Load more (Promos) ──
+const loadMorePromos = document.getElementById('load-more-promos');
+if (loadMorePromos) {
+  loadMorePromos.addEventListener('click', function () {
+    const grid = document.getElementById('promos-more');
+    if (grid) {
+      grid.classList.remove('hidden');
+      grid.querySelectorAll('iframe[data-src]').forEach(iframe => {
+        iframe.src = iframe.dataset.src;
+        iframe.removeAttribute('data-src');
+      });
+    }
+    this.parentElement.remove();
+  });
+}
+
 // ── Load more (Commercials) ──
 const loadMoreBtn = document.getElementById('load-more-commercials');
 if (loadMoreBtn) {
