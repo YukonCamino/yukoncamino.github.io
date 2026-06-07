@@ -1,0 +1,117 @@
+// ── Tab navigation ──
+const navBtns = document.querySelectorAll('.nav-btn');
+const tabs = document.querySelectorAll('.tab');
+
+navBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    navBtns.forEach(b => b.classList.remove('active'));
+    tabs.forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ── Carousels ──
+function initCarousel(el) {
+  const track  = el.querySelector('.car-track');
+  const slides = el.querySelectorAll('.car-slide');
+  const prev   = el.querySelector('.car-prev');
+  const next   = el.querySelector('.car-next');
+  const visible = 3;
+  let index = 0;
+  const max = slides.length - visible;
+
+  function slideWidth() {
+    return slides[0].offsetWidth;
+  }
+
+  function go(n) {
+    index = Math.max(0, Math.min(n, max));
+    track.style.transform = `translateX(${-index * slideWidth()}px)`;
+  }
+
+  prev.addEventListener('click', () => { go(index - 1); resetTimer(); });
+  next.addEventListener('click', () => { go(index + 1); resetTimer(); });
+
+  window.addEventListener('resize', () => go(index));
+
+  // auto-scroll every 3 seconds, pause on hover
+  let timer = setInterval(() => go(index < max ? index + 1 : 0), 3000);
+  function resetTimer() {
+    clearInterval(timer);
+    timer = setInterval(() => go(index < max ? index + 1 : 0), 3000);
+  }
+  el.addEventListener('mouseenter', () => clearInterval(timer));
+  el.addEventListener('mouseleave', () => { timer = setInterval(() => go(index < max ? index + 1 : 0), 3000); });
+
+  slides.forEach(slide => {
+    slide.querySelector('img').addEventListener('click', e => openLightbox(e.target));
+  });
+}
+
+document.querySelectorAll('.carousel').forEach(initCarousel);
+
+// ── Lightbox ──
+const lightbox = document.getElementById('lightbox');
+const lbImg    = document.getElementById('lb-img');
+const lbClose  = document.getElementById('lb-close');
+const lbPrev   = document.getElementById('lb-prev');
+const lbNext   = document.getElementById('lb-next');
+
+// Collect all photo images in order for lightbox navigation
+let allPhotos = [];
+let lbIndex = 0;
+
+function buildPhotoList() {
+  allPhotos = Array.from(document.querySelectorAll('#photo .car-slide img, #photo .poster-card img'));
+}
+
+// Wire poster grid clicks to lightbox
+document.querySelectorAll('.poster-card img').forEach(img => {
+  img.addEventListener('click', () => openLightbox(img));
+});
+
+function openLightbox(img) {
+  buildPhotoList();
+  lbIndex = allPhotos.indexOf(img);
+  lbImg.src = allPhotos[lbIndex].src;
+  lightbox.classList.remove('hidden');
+}
+
+function closeLightbox() {
+  lightbox.classList.add('hidden');
+  lbImg.src = '';
+}
+
+function shiftLightbox(dir) {
+  lbIndex = (lbIndex + dir + allPhotos.length) % allPhotos.length;
+  lbImg.src = allPhotos[lbIndex].src;
+}
+
+lbClose.addEventListener('click', closeLightbox);
+lbPrev.addEventListener('click',  () => shiftLightbox(-1));
+lbNext.addEventListener('click',  () => shiftLightbox(1));
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+
+document.addEventListener('keydown', e => {
+  if (lightbox.classList.contains('hidden')) return;
+  if (e.key === 'Escape')      closeLightbox();
+  if (e.key === 'ArrowLeft')   shiftLightbox(-1);
+  if (e.key === 'ArrowRight')  shiftLightbox(1);
+});
+
+// ── Load more (Commercials) ──
+const loadMoreBtn = document.getElementById('load-more-commercials');
+if (loadMoreBtn) {
+  loadMoreBtn.addEventListener('click', function () {
+    document.querySelectorAll('#commercials .more-videos').forEach(el => {
+      el.classList.remove('hidden');
+      const iframe = el.querySelector('iframe');
+      if (iframe && iframe.dataset.src) {
+        iframe.src = iframe.dataset.src;
+        delete iframe.dataset.src;
+      }
+    });
+    this.parentElement.remove();
+  });
+}
