@@ -11,7 +11,9 @@ header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding: 36px 18% 28px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 36px 0 28px;
 }
 
 .identity {
@@ -23,14 +25,15 @@ header {
 .site-name {
   font-size: 28px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   line-height: 1;
+  color: #111;
 }
 
 .site-role {
   font-size: 11px;
-  letter-spacing: 0.12em;
-  color: #999;
+  letter-spacing: 0.14em;
+  color: #aaa;
   text-transform: uppercase;
 }
 
@@ -52,11 +55,8 @@ nav {
   transition: color 0.2s;
 }
 
-.nav-btn:hover,
-.nav-btn.active {
-  color: #111;
-  font-weight: 700;
-}
+.nav-btn:hover { color: #555; }
+.nav-btn.active { color: #111; font-weight: 700; }
 
 /* ── Tabs ── */
 .tab { display: none; }
