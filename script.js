@@ -122,6 +122,8 @@ document.addEventListener('keydown', e => {
 document.querySelectorAll('.gif-thumb').forEach(thumb => {
   thumb.addEventListener('click', () => {
     const id = thumb.dataset.vimeo;
+    const video = thumb.querySelector('video');
+    if (video) video.pause();
     const iframe = document.createElement('iframe');
     iframe.src = `https://player.vimeo.com/video/${id}?autoplay=1`;
     iframe.allowFullscreen = true;
