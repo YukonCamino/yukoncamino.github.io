@@ -21,7 +21,7 @@ navBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     const tabName = btn.dataset.tab;
     switchTab(tabName);
-    location.hash = tabName;
+    history.pushState(null, '', '#' + tabName);
   });
 });
 
@@ -136,7 +136,13 @@ const loadMoreBtn = document.getElementById('load-more-commercials');
 if (loadMoreBtn) {
   loadMoreBtn.addEventListener('click', function () {
     const grid = document.getElementById('commercials-more');
-    if (grid) grid.classList.remove('hidden');
+    if (grid) {
+      grid.classList.remove('hidden');
+      grid.querySelectorAll('iframe[data-src]').forEach(iframe => {
+        iframe.src = iframe.dataset.src;
+        iframe.removeAttribute('data-src');
+      });
+    }
     this.parentElement.remove();
   });
 }
