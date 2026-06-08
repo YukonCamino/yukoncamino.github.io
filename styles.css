@@ -261,7 +261,7 @@ nav {
 /* ── Movie poster grid ── */
 .poster-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   padding: 8px 48px 48px;
   max-width: 1200px;
