@@ -133,34 +133,32 @@ document.querySelectorAll('.gif-thumb').forEach(thumb => {
   });
 });
 
-// ── Load more (Promos) ──
-const loadMorePromos = document.getElementById('load-more-promos');
-if (loadMorePromos) {
-  loadMorePromos.addEventListener('click', function () {
-    const grid = document.getElementById('promos-more');
-    if (grid) {
-      grid.classList.remove('hidden');
-      grid.querySelectorAll('iframe[data-src]').forEach(iframe => {
+// ── Load more (batched so mobile Safari doesn't run out of memory) ──
+function initLoadMore(btnId, gridId, batch) {
+  const btn = document.getElementById(btnId);
+  const grid = document.getElementById(gridId);
+  if (!btn || !grid) return;
+  const items = Array.from(grid.children);
+  items.forEach(el => el.classList.add('hidden'));
+  let loaded = 0;
+  btn.addEventListener('click', function () {
+    grid.classList.remove('hidden');
+    items.slice(loaded, loaded + batch).forEach(el => {
+      el.classList.remove('hidden');
+      el.querySelectorAll('iframe[data-src]').forEach(iframe => {
         iframe.src = iframe.dataset.src;
         iframe.removeAttribute('data-src');
       });
+    });
+    loaded += batch;
+    if (loaded >= items.length) {
+      this.parentElement.remove();
+    } else {
+      this.textContent = 'LOAD MORE';
+      grid.after(this.parentElement);
     }
-    this.parentElement.remove();
   });
 }
 
-// ── Load more (Commercials) ──
-const loadMoreBtn = document.getElementById('load-more-commercials');
-if (loadMoreBtn) {
-  loadMoreBtn.addEventListener('click', function () {
-    const grid = document.getElementById('commercials-more');
-    if (grid) {
-      grid.classList.remove('hidden');
-      grid.querySelectorAll('iframe[data-src]').forEach(iframe => {
-        iframe.src = iframe.dataset.src;
-        iframe.removeAttribute('data-src');
-      });
-    }
-    this.parentElement.remove();
-  });
-}
+initLoadMore('load-more-promos', 'promos-more', 10);
+initLoadMore('load-more-commercials', 'commercials-more', 10);
