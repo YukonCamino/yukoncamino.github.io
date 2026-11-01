@@ -92,7 +92,7 @@ document.querySelectorAll('.poster-card img').forEach(img => {
 function openLightbox(img) {
   buildPhotoList();
   lbIndex = allPhotos.indexOf(img);
-  lbImg.src = allPhotos[lbIndex].src;
+  lbImg.src = allPhotos[lbIndex].src || allPhotos[lbIndex].dataset.src;
   lightbox.classList.remove('hidden');
 }
 
@@ -103,7 +103,7 @@ function closeLightbox() {
 
 function shiftLightbox(dir) {
   lbIndex = (lbIndex + dir + allPhotos.length) % allPhotos.length;
-  lbImg.src = allPhotos[lbIndex].src;
+  lbImg.src = allPhotos[lbIndex].src || allPhotos[lbIndex].dataset.src;
 }
 
 lbClose.addEventListener('click', closeLightbox);
@@ -117,6 +117,39 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowLeft')   shiftLightbox(-1);
   if (e.key === 'ArrowRight')  shiftLightbox(1);
 });
+
+// ── Images: fetch only when their tab is shown and they near the viewport ──
+// (loading="lazy" can't help here: images inside display:none tabs have no
+//  layout box, so the browser loads them all regardless.)
+const lazyImgs = document.querySelectorAll('img[data-src]');
+if (lazyImgs.length) {
+  const io = new IntersectionObserver((entries, obs) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const img = e.target;
+      img.src = img.dataset.src;
+      obs.unobserve(img);
+    });
+  }, { rootMargin: '400px 0px' });
+  lazyImgs.forEach(i => io.observe(i));
+}
+
+// ── Featured videos: load and play only what's on screen ──
+const lazyVideos = document.querySelectorAll('video[data-src]');
+if (lazyVideos.length) {
+  const vo = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      const v = e.target;
+      if (e.isIntersecting) {
+        if (!v.src) v.src = v.dataset.src;
+        v.play().catch(() => {});
+      } else {
+        v.pause();
+      }
+    });
+  }, { rootMargin: '300px 0px' });
+  lazyVideos.forEach(v => vo.observe(v));
+}
 
 // ── GIF thumbnails → Vimeo on click ──
 document.querySelectorAll('.gif-thumb').forEach(thumb => {
